@@ -27,6 +27,11 @@ Font restartFont;
 
 Rocketship rocketship = new Rocketship(250, 700, 50, 50);
 
+int rX = 250;
+int rY = 700;
+
+ObjectManager objectManager = new ObjectManager(rocketship);
+
 GamePanel(){
 	timer = new Timer(1000 / 60, this);
 	//gameObject = new GameObject(10, 10, 100, 100);
@@ -45,7 +50,7 @@ void updateMenuState() {
 	
 }
 void updateGameState() {
-	rocketship.update();
+	objectManager.update();
 }
 void updateEndState() {
 	
@@ -72,7 +77,7 @@ void drawGameState(Graphics g) {
 	g.setColor(Color.BLACK);
 	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
 	
-	rocketship.draw(g);
+	objectManager.draw(g);
 }
 void drawEndState(Graphics g) {
 	g.setColor(Color.RED);
@@ -90,6 +95,7 @@ void drawEndState(Graphics g) {
 	g.setColor(Color.BLACK);
 	g.drawString("Press ENTER to restart", 80, 500);
 }
+
 @Override
 public void actionPerformed(ActionEvent e) {
 	// TODO Auto-generated method stub
@@ -135,6 +141,24 @@ public void keyPressed(KeyEvent e) {
             currentState = MENU_STATE;
 
 		}
+	}
+	if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+		rX = rX-5;
+		rocketship.x = rX;
+	}if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+		rX = rX+5;
+		rocketship.x = rX;
+	}
+	if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+		rY = rY+5;
+		rocketship.y = rY;
+	}if(e.getKeyCode() == KeyEvent.VK_UP) {
+		rY = rY-5;
+		rocketship.y = rY;
+	}
+	
+	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+		objectManager.addProjectile(new Projectiles(rocketship.x, rocketship.y, 10, 10));
 	}
 }
 @Override
