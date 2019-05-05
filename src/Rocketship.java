@@ -9,7 +9,7 @@ Rocketship(int x, int y, int width, int height){
 	speed = 5;
 }
 void update() {
-	
+	super.update();
 }
 void draw(Graphics g) {
 	  g.setColor(Color.BLUE);

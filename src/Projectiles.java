@@ -8,11 +8,12 @@ int speed = 10;
 		// TODO Auto-generated constructor stub
 	}
 	void update() {
+		super.update();
 		y = y-speed;
 		if (y<0) {
 			isAlive = false;
 		}
-		System.out.println("Tyler says Hi");
+		//System.out.println("Tyler says Hi");
 			}
 	void draw(Graphics g) {
 		  g.setColor(Color.RED);

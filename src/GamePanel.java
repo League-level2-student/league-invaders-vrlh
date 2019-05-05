@@ -51,6 +51,8 @@ void updateMenuState() {
 }
 void updateGameState() {
 	objectManager.update();
+	objectManager.manageEnemies();
+	
 }
 void updateEndState() {
 	
@@ -128,12 +130,12 @@ public void paintComponent(Graphics g){
 @Override
 public void keyTyped(KeyEvent e) {
 	// TODO Auto-generated method stub
-	System.out.println("What what?");
+	//System.out.println("What what?");
 }
 @Override
 public void keyPressed(KeyEvent e) {
 	// TODO Auto-generated method stub
-	System.out.println("Something");
+	//System.out.println("Something");
 	if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 		currentState++;
 		if(currentState > END_STATE){
@@ -158,13 +160,13 @@ public void keyPressed(KeyEvent e) {
 	}
 	
 	if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-		objectManager.addProjectile(new Projectiles(rocketship.x, rocketship.y, 10, 10));
+		objectManager.addProjectile(new Projectiles(rocketship.x + 22, rocketship.y, 10, 10));
 	}
 }
 @Override
 public void keyReleased(KeyEvent e) {
 	// TODO Auto-generated method stub
-	System.out.println("Hi");
+	//System.out.println("Hi");
 	
 }
 }
