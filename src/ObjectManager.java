@@ -13,6 +13,7 @@ ArrayList<Alien> alien = new ArrayList<>();
 
 long enemyTimer = 0;
 int enemySpawnTime = 1000;
+int score = 0;
 
 
 void update() {
@@ -25,6 +26,9 @@ void update() {
 		alien.get(i).update();
 	}
 
+}
+int getScore() {
+	return score;
 }
 void draw(Graphics g) {
 rocketship.draw(g);
@@ -50,19 +54,24 @@ enemyTimer = System.currentTimeMillis();
 }
 void purgeObjects() {
 	for(int i = 0; i < alien.size(); i++) {
-		if(alien.get(i).height > LeagueInvaders.height) {
+		if(alien.get(i).height > LeagueInvaders.height || alien.get(i).isAlive == false)  {
 			alien.remove(i);
 		}
 	}
+	
 }
 void checkCollision() {
 	for (Alien a : alien) {
 		 if(rocketship.collisionBox.intersects(a.collisionBox)){
              rocketship.isAlive = false;
+             score++;
              System.out.println("Tyler said to this and its in checkCollision in ObjectManager");
      }
-		if() {
-			
+		 for (Projectiles p : projectile){
+			if(a.collisionBox.intersects(p.collisionBox)) {
+				a.isAlive = false;
+				System.out.println("checkCollsioion in ObjectManager for projectiles");
+			}
 		}
 	}
 	

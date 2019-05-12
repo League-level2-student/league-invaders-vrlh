@@ -5,7 +5,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -25,6 +28,11 @@ Font endFont;
 Font killFont;
 Font restartFont;
 
+public static BufferedImage alienImg;
+public static BufferedImage rocketImg;
+public static BufferedImage bulletImg;
+public static BufferedImage spaceImg;
+
 Rocketship rocketship = new Rocketship(250, 700, 50, 50);
 
 int rX = 250;
@@ -43,6 +51,19 @@ GamePanel(){
 	endFont = new Font("Arial", Font.PLAIN, 48);
 	killFont = new Font("Arial", Font.PLAIN, 30);
 	restartFont = new Font("Arial", Font.PLAIN, 30);
+	
+	 try {
+         alienImg = ImageIO.read(this.getClass().getResourceAsStream("alien.png"));
+         rocketImg = ImageIO.read(this.getClass().getResourceAsStream("rocket.png"));
+         bulletImg = ImageIO.read(this.getClass().getResourceAsStream("bullet.png"));
+         spaceImg = ImageIO.read(this.getClass().getResourceAsStream("space.png"));
+ } catch (IOException e) {
+
+         // TODO Auto-generated catch block
+
+         e.printStackTrace();
+
+ }
 }void startgame(){
 	timer.start();
 }
@@ -52,6 +73,11 @@ void updateMenuState() {
 void updateGameState() {
 	objectManager.update();
 	objectManager.manageEnemies();
+	objectManager.purgeObjects();
+	objectManager.checkCollision();
+	if(rocketship.isAlive == false) {
+		currentState = END_STATE;
+	}
 	
 }
 void updateEndState() {
@@ -60,6 +86,7 @@ void updateEndState() {
 void drawMenuState(Graphics g) {
 	g.setColor(Color.BLUE);
 	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
+	
 	
 	g.setFont(titleFont);
 	g.setColor(Color.WHITE);
@@ -77,7 +104,7 @@ void drawMenuState(Graphics g) {
 }
 void drawGameState(Graphics g) {
 	g.setColor(Color.BLACK);
-	g.fillRect(0, 0, LeagueInvaders.width, LeagueInvaders.height);
+	g.drawImage(GamePanel.spaceImg, 0, 0, LeagueInvaders.width, LeagueInvaders.height, null);
 	
 	objectManager.draw(g);
 }
@@ -91,7 +118,7 @@ void drawEndState(Graphics g) {
 	
 	g.setFont(killFont);
 	g.setColor(Color.BLACK);
-	g.drawString("You killed 0 enemies", 100, 350);
+	g.drawString("You killed " + objectManager.getScore() + " enemies", 100, 350);
 	
 	g.setFont(restartFont);
 	g.setColor(Color.BLACK);
@@ -143,19 +170,28 @@ public void keyPressed(KeyEvent e) {
             currentState = MENU_STATE;
 
 		}
+		if (currentState == MENU_STATE) {
+			rocketship = new Rocketship(250, 700, 50, 50);
+			objectManager = new ObjectManager(rocketship);
+			rX = 250;
+			rY= 700;
+			objectManager.score = 0;
+		}
+		
+		
 	}
 	if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-		rX = rX-5;
+		rX = rX-rocketship.speed;
 		rocketship.x = rX;
 	}if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-		rX = rX+5;
+		rX = rX+rocketship.speed;
 		rocketship.x = rX;
 	}
 	if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-		rY = rY+5;
+		rY = rY+rocketship.speed;
 		rocketship.y = rY;
 	}if(e.getKeyCode() == KeyEvent.VK_UP) {
-		rY = rY-5;
+		rY = rY-rocketship.speed;
 		rocketship.y = rY;
 	}
 	
